@@ -1,0 +1,79 @@
+doctype html
+html(lang='en')
+    head
+        title Smart Words
+        link(rel="stylesheet", href="../stylesheets/style.css")
+        link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Rancho', type='text/css')
+        meta(charset='UTF-8')
+        meta(name='description', content='Smart Words is online game which allows you to enhance your knowledge and outlook by searching famous quotations, sayings and puzzles')
+        meta(name='keywords', content='game, quotations, sayings, puzzles, knowledge, brain activity')
+        script(type='text/javascript', src='../javascripts/jquery-latest.min.js')
+        style.
+            table, th, td {
+                padding: 5px 3px;
+                border: 1px solid #cccccc;
+                border-collapse: collapse;
+                width: 570px;
+                margin: 20px auto;
+                text-align: center;
+            }
+
+            table th {
+                height: 40px;
+            }
+
+            table td {
+                height: 60px;
+            }
+
+            .rate-table .user-number {
+                width: 60px;
+            }
+
+            .rate-table .user-image {
+                width: 90px;
+            }
+
+            .rate-table .user-name {
+                width: 210px;
+            }
+
+            .rate-table .user-scores {
+                width: 160px;
+            }
+
+            .rate-table #owner-row {
+                margin: 0 auto;
+                border: 2px solid yellow;
+                background: red;
+            }
+    body
+        .wrapper
+            header
+                .row
+                    .header-logo
+                        a.smart-words(href='#')
+                            img.smart-word-logo(src='../images/smart-words-logo.png')
+            .content
+                .rates.row
+                    .top-players
+                        table.rate-table
+                            tr
+                                th.user-number #
+                                th.user-image Image
+                                th.user-name Username
+                                th.user-scores Scores
+                            each val, index in users
+                                tr(id = (val.id == user_id) ? "owner-row" : undefined)
+                                    td.user-number
+                                        |   #{index+1}
+                                    td.user-image
+                                        img(src='http://graph.facebook.com/#{val.userId}/picture', alt='profile picture', width='50', height='50')
+                                    td.user-name
+                                        |   #{val.username}
+                                    td.user-scores
+                                        |   #{val.score}
+            .push
+        footer
+            .copyright
+                p © 2015 WebandWeb.
