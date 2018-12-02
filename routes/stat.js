@@ -1,9 +1,13 @@
 var express = require('express');
 var router = express.Router();
 var statModel = require("../models/stat");
+var md5 = require('md5');
+
+const api_key = 'Qayl ara merjir serjin';
+
 
 /* GET users listing. */
-router.get('/:id', function(req, res) {
+router.get('/:id', (req, res) => {
     statModel
         .findById(req.params.id)
         .then((stat) => {
@@ -11,28 +15,42 @@ router.get('/:id', function(req, res) {
         });
 });
 
-router.post('/', function(req, res) {
+router.post('/', (req, res) => {
     const stat = new statModel({
         lat: req.body.lat,
-        long: req.body.long,
+        lng: req.body.lng,
         accuracy: req.body.accuracy,
         acceleration: req.body.acceleration,
-        signal_strength: req.body.signal_strength,
-        is_driving: req.body.is_driving
+        wifi_strength: req.body.wifi_strength,
+        isDriving: req.body.isDriving
     });
 
     stat
         .save()
         .then(() => {
-            console.log('stat', stat);
             return res.send(stat);
         }, (e) => {
-        console.log('e', e);
-            var err = new Error();
-            err.status = 400;
-            return res.end(err);
-    });
+            res.status(400).send('{ "message": "Invalid request" }');
+        });
 });
 
+router.post('/truncate', (req, res) => {
+    const token = req.headers.token;
+    const timestamp = req.headers.t;
+
+    const resultToken = md5(`${api_key}${timestamp}`);
+
+    if (token != resultToken) {
+        return res.status(403).send('{ "message": "Access denied" }')
+    }
+
+    statModel.remove({}, (err) => {
+        if (err) {
+            return res.status(500).send('{ "message": "Something went wrong" }');
+        } else {
+            res.end();
+        }
+    });
+});
 
 module.exports = router;
