@@ -1,2 +1,0 @@
-# appstat
-Gather app stat

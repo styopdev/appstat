@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 var Schema   = mongoose.Schema;
 
-var GameSchema = new Schema({
+var StatsSchema = new Schema({
     lat : Number,
     long : Number,
     accuracy : Number,
@@ -9,4 +9,4 @@ var GameSchema = new Schema({
     signal_strength : Number,
     is_driving : Boolean
 });
-module.exports = mongoose.model('Games', GameSchema);
+module.exports = mongoose.model('Stats', StatsSchema);

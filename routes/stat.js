@@ -3,21 +3,35 @@ var router = express.Router();
 var statModel = require("../models/stat");
 
 /* GET users listing. */
-router.get('/stat/:id', function(req, res) {
+router.get('/:id', function(req, res) {
     statModel
         .findById(req.params.id)
-        .then(res.json);
+        .then((stat) => {
+            return res.send(stat);
+        });
 });
 
-router.post('/stat', function(req, res) {
-    statModel.create({
+router.post('/', function(req, res) {
+    const stat = new statModel({
         lat: req.body.lat,
         long: req.body.long,
         accuracy: req.body.accuracy,
         acceleration: req.body.acceleration,
         signal_strength: req.body.signal_strength,
         is_driving: req.body.is_driving
-    }).then(res.json);
+    });
+
+    stat
+        .save()
+        .then(() => {
+            console.log('stat', stat);
+            return res.send(stat);
+        }, (e) => {
+        console.log('e', e);
+            var err = new Error();
+            err.status = 400;
+            return res.end(err);
+    });
 });
 
 

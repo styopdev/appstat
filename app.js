@@ -9,8 +9,11 @@ var bodyParser   = require('body-parser');
 var cookieParser = require('cookie-parser');
 
 // ROUTES
-
-var stat  = require('./routes/stat');
+var routes = require('./routes/index');
+var users  = require('./routes/users');
+var game   = require('./routes/game');
+var admin  = require('./routes/admin');
+var stats  = require('./routes/stat');
 
 var app = express();
 var http = require("http");
@@ -35,17 +38,21 @@ app.use(session({
     saveUninitialized :false
 }));
 
+app.use('/admin', admin);
 
-// app.use('/', function (req, res, next) {
-//   if (req.url === '/' || req.url === '/users/login' || req.url === '/users/create' ||  ~req.url.indexOf('admin') || ~req.url.indexOf('lang')) {
-//     return next();
-//   } else if (!req.session.user_id) {
-//     return res.redirect('/users/login');
-//   }
-//   next();
-// });
+app.use('/', function (req, res, next) {
+  if (~req.url.indexOf('stats')) {
+    return next();
+  } else if (!req.session.user_id) {
+    return res.redirect('/users/login');
+  }
+  next();
+});
 
-app.use('/stat', stat);
+app.use('/', routes);
+app.use('/users', users);
+app.use('/game', game);
+app.use('/stats', stats);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
