@@ -16,7 +16,10 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-    const stats = req.body;
+    const stats = req.body.data;
+    if (!stats) {
+        res.status(400).send('{ "message": "Invalid request" }');
+    }
     const promises = [];
 
     stats.forEach(stat => {
