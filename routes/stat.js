@@ -7,28 +7,34 @@ const api_key = 'Qayl ara merjir serjin';
 
 
 /* GET users listing. */
-router.get('/:id', (req, res) => {
+router.get('/', (req, res) => {
     statModel
-        .findById(req.params.id)
-        .then((stat) => {
-            return res.send(stat);
+        .find({})
+        .then((stats) => {
+            return res.send(stats);
         });
 });
 
 router.post('/', (req, res) => {
-    const stat = new statModel({
-        lat: req.body.lat,
-        lng: req.body.lng,
-        accuracy: req.body.accuracy,
-        acceleration: req.body.acceleration,
-        wifi_strength: req.body.wifi_strength,
-        isDriving: req.body.isDriving
+    const stats = req.body;
+    const promises = [];
+
+    stats.forEach(stat => {
+        const mongoStat = new statModel({
+            lat: stat.lat,
+            lng: stat.lng,
+            accuracy: stat.accuracy,
+            acceleration: stat.acceleration,
+            wifi_strength: stat.wifi_strength,
+            isDriving: stat.isDriving
+        });
+        promises.push(mongoStat.save());
     });
 
-    stat
-        .save()
+    Promise
+        .all(promises)
         .then(() => {
-            return res.send(stat);
+            return res.status(201).end();
         }, (e) => {
             res.status(400).send('{ "message": "Invalid request" }');
         });
