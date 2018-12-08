@@ -5,7 +5,9 @@ var StatsSchema = new Schema({
     lat : Number,
     lng : Number,
     accuracy : Number,
-    acceleration : Number,
+    accelerationX: Number,
+    accelerationY: Number,
+    accelerationZ: Number,
     wifi_strength : Number,
     isDriving : Boolean
 });
