@@ -27,9 +27,9 @@ router.post('/', (req, res) => {
             lat: stat.lat,
             lng: stat.lng,
             accuracy: stat.accuracy,
-            accelerationX: req.body.accelerationX,
-            accelerationY: req.body.accelerationY,
-            accelerationZ: req.body.accelerationZ,
+            accelerationX: stat.accelerationX,
+            accelerationY: stat.accelerationY,
+            accelerationZ: stat.accelerationZ,
             wifi_strength: stat.wifi_strength,
             isDriving: stat.isDriving
         });
