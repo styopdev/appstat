@@ -41,7 +41,7 @@ router.post('/', (req, res) => {
         .then(() => {
             return res.status(201).end();
         }, (e) => {
-            res.status(400).send('{ "message": "Invalid request" }');
+            res.status(400).send('{ "message": "Invalid request" }', e);
         });
 });
 
